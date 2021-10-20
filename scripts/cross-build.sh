@@ -4,7 +4,7 @@
 # Example:
 #         docker run --rm -v $(pwd):/ttyd -w /ttyd tsl0922/musl-cross ./scripts/cross-build.sh mips
 #
-set -eo pipefail
+set -xeo pipefail
 
 CROSS_ROOT="${CROSS_ROOT:-/opt/cross}"
 STAGE_ROOT="${STAGE_ROOT:-/opt/stage}"
