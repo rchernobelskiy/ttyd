@@ -140,8 +140,8 @@ static char **build_env(struct pss_tty *pss) {
   // TTYD_USER
   if (strlen(pss->user) > 0) {
     envp = xrealloc(envp, (++n) * sizeof(char *));
-    envp[i] = xmalloc(40);
-    snprintf(envp[i], 40, "TTYD_USER=%s", pss->user);
+    envp[i] = xmalloc(sizeof(pss->user)+10);
+    sprintf(envp[i], "TTYD_USER=%s", pss->user);
     i++;
   }
 
@@ -185,6 +185,7 @@ static void wsi_output(struct lws *wsi, pty_buf_t *buf) {
 
 static bool check_auth(struct lws *wsi, struct pss_tty *pss) {
   if (server->auth_header != NULL) {
+    pss->user = xmalloc(lws_hdr_custom_length(wsi, server->auth_header, strlen(server->auth_header))+1);
     return lws_hdr_custom_copy(wsi, pss->user, sizeof(pss->user), server->auth_header, strlen(server->auth_header)) > 0;
   }
 
