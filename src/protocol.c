@@ -76,7 +76,10 @@ static pty_ctx_t *pty_ctx_init(struct pss_tty *pss) {
   return ctx;
 }
 
-static void pty_ctx_free(pty_ctx_t *ctx) { free(ctx); }
+static void pty_ctx_free(pty_ctx_t *ctx) {
+  if (ctx->pss != NULL && ctx->pss->user != NULL) free(ctx->pss->user);
+  free(ctx);
+}
 
 static void process_read_cb(pty_process *process, pty_buf_t *buf, bool eof) {
   pty_ctx_t *ctx = (pty_ctx_t *)process->ctx;
